@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/chromeCustomTabFragment">
+
+    <fragment
+        android:id="@+id/chromeCustomTabFragment"
+        android:name="ai.trully.webview.ui.ChromeCustomTabFragment"
+        android:label="fragment_chrome_custom_tab"
+        tools:layout="@layout/fragment_chrome_custom_tab" >
+        <action
+            android:id="@+id/action_chromeCustomTabFragment_to_processCompletedFragment"
+            app:destination="@id/processCompletedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/processCompletedFragment"
+        android:name="ai.trully.webview.ui.ProcessCompletedFragment"
+        android:label="fragment_process_completed"
+        tools:layout="@layout/fragment_process_completed" >
+        <action
+            android:id="@+id/action_processCompletedFragment_to_chromeCustomTabFragment"
+            app:destination="@id/chromeCustomTabFragment" />
+        <argument
+            android:name="userID"
+            app:argType="string" />
+    </fragment>
+</navigation>
