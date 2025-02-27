@@ -2,7 +2,7 @@
 
 ## How to use it
 
-1. Create a webhook from [webhook.site](https://webhook.site)
+1. Create a webhook from [webhook.site](https://webhook.site) (Make sure you edit the webhook to enable CORS)
 2. Go to client [Dashboard](https://sandboxapp.trully.ai) and create a Magic Link with a webhook url to retrieve response data. Use the webhook url you got from [webhook.site](https://webhook.site)
 3. Clone this repository
 4. Open Android Studio
