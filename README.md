@@ -8,7 +8,7 @@
 4. Open Android Studio
 5. Open <i>ChromeCustomTabViewModel<i>. Replace YOUR_API_KEY for the API KEY you got from our Dashboard.
 6. Open <i>WebhookService<i>. Replace YOUR_WEBHOOK_TOKEN for the token of the webhook you create. The token is the text you see after the <i>https:webhook.site/</i>. I.e if your url is <i>https:webhook.site/123-456</i> then your token would be <i>123-456</i> 
-7. Open <i>ChromeCustomTabFragment<i>. Replace YOUR_USER_ID and YOUR_MAGIC_LINK_TITLE for any string. Make sure you only use letter and numbers.
+7. Open <i>ChromeCustomTabFragment<i>. Replace YOUR_USER_ID, YOUR_MAGIC_LINK_TITLE and YOUR_WEBHOOK_URL for any string. Make sure you only use letter and numbers.
 8. Run app
 
 ## ⚠️ Important
