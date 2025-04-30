@@ -8,5 +8,7 @@ data class SDKResponse(
     @SerializedName("image")
     val selfie: String? = null,
     @SerializedName("label")
-    val label: String? = null
+    val label: String? = null,
+    @SerializedName("user_id")
+    val user_id: String? = null,
 )

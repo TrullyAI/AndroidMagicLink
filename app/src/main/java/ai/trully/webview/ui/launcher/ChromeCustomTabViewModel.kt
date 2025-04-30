@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class ChromeCustomTabViewModel : ViewModel() {
 
     companion object {
-        private const val YOUR_API_KEY = "Vz7cExzjz0aXKcPrC78OhauUqr1t6oId3E2furct"
+        private const val YOUR_API_KEY = "YOUR_API_KEY"
     }
 
     private val _magicLinkUrl = MutableStateFlow<MagicLinkUrlState>(MagicLinkUrlState.Idle)
@@ -31,5 +31,9 @@ class ChromeCustomTabViewModel : ViewModel() {
                 _magicLinkUrl.value = MagicLinkUrlState.Error("Error creando Magic Link")
             }
         }
+    }
+
+    fun resetMagicLinkUrlState() {
+        _magicLinkUrl.value = MagicLinkUrlState.Idle
     }
 }

@@ -25,16 +25,17 @@ class ProcessCompletedViewModel : ViewModel() {
         viewModelScope.launch {
             val response = NetworkManager.buildRetrofit("https://webhook.site/").create(
                 WebhookService::class.java)
-                .getData("content:$userID")
+                .getData()
             val body = response.body()
             val listSize = body?.data?.size ?: 0
 
             if (listSize > 0) {
-                val content = body?.data?.get(1)?.content
+                val content = body?.data?.get(0)?.content
 
                 if (content != null) {
                     val sdkResponse: SDKResponse = Gson().fromJson(content, SDKResponse::class.java)
-                    _webhookData.value = WebhookDataState.Success(sdkResponse)
+                    if (sdkResponse.user_id != userID) _webhookData.value = WebhookDataState.Error("Debes terminar el proceso")
+                    else _webhookData.value = WebhookDataState.Success(sdkResponse)
                 } else {
                     _webhookData.value = WebhookDataState.Error("Debes terminar el proceso")
                 }

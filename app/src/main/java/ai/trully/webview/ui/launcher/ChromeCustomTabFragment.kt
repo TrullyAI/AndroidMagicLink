@@ -1,5 +1,6 @@
 package ai.trully.webview.ui.launcher
 
+import ai.trully.webview.R
 import ai.trully.webview.databinding.FragmentChromeCustomTabBinding
 import ai.trully.webview.model.request.MagicLinkRequest
 import ai.trully.webview.model.request.Metadata
@@ -28,8 +29,11 @@ class ChromeCustomTabFragment : Fragment() {
 
     private var tabIsOpen = false
 
-    private val MAGIC_LINK_TITLE = "Test Magic Link"
-    private val YOUR_USER_ID = "un-id"
+    companion object {
+        private const val MAGIC_LINK_TITLE = "YOUR_MAGIC_LINK_TITLE"
+        private const val YOUR_USER_ID = "YOUR_USER_ID"
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,6 +82,7 @@ class ChromeCustomTabFragment : Fragment() {
 
     private fun openCustomTab(url: String) {
         val customTabsIntent = CustomTabsIntent.Builder()
+            .setToolbarColor(requireContext().getColor(R.color.white))
             .setBookmarksButtonEnabled(false)
             .setUrlBarHidingEnabled(true)
             .setShowTitle(false)
@@ -93,7 +98,10 @@ class ChromeCustomTabFragment : Fragment() {
                 viewModel.magicLinkUrl.collect { state ->
                     when (state) {
                         MagicLinkUrlState.Idle -> Log.i("info", "esperando acción de usuario")
-                        is MagicLinkUrlState.Success -> openCustomTab(state.url)
+                        is MagicLinkUrlState.Success -> {
+                            openCustomTab(state.url)
+                            viewModel.resetMagicLinkUrlState()
+                        }
                         is MagicLinkUrlState.Error -> showError(state.msg)
                     }
                 }
