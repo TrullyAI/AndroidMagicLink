@@ -83,7 +83,7 @@ class ChromeCustomTabFragment : Fragment() {
 
     private fun openCustomTab(url: String) {
         val customTabsIntent = CustomTabsIntent.Builder()
-            .setSecondaryToolbarColor(requireContext().getColor(R.color.white))
+            .setToolbarColor(requireContext().getColor(R.color.white))
             .setBookmarksButtonEnabled(false)
             .setUrlBarHidingEnabled(true)
             .setShowTitle(false)
