@@ -3,7 +3,6 @@ package ai.trully.webview.ui.launcher
 import ai.trully.webview.api.NetworkManager
 import ai.trully.webview.api.services.MagicLinkService
 import ai.trully.webview.model.request.MagicLinkRequest
-import ai.trully.webview.ui.launcher.stateflow.IsTabOpenState
 import ai.trully.webview.ui.launcher.stateflow.MagicLinkUrlState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,7 +21,8 @@ class ChromeCustomTabViewModel : ViewModel() {
 
     fun getMagicLinkUrl(request: MagicLinkRequest) {
         viewModelScope.launch {
-            val response = NetworkManager.buildRetrofit("https://sandbox.trully.ai/", YOUR_API_KEY).create(MagicLinkService::class.java).generateMagicLink(request)
+            val response = NetworkManager.buildRetrofit("https://sandbox.trully.ai/", YOUR_API_KEY)
+                .create(MagicLinkService::class.java).generateMagicLink(request)
             val body = response.body()
 
             if (body != null) {

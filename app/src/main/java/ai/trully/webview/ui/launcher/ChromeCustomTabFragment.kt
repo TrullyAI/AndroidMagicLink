@@ -83,7 +83,7 @@ class ChromeCustomTabFragment : Fragment() {
 
     private fun openCustomTab(url: String) {
         val customTabsIntent = CustomTabsIntent.Builder()
-            .setToolbarColor(requireContext().getColor(R.color.white))
+            .setSecondaryToolbarColor(requireContext().getColor(R.color.white))
             .setBookmarksButtonEnabled(false)
             .setUrlBarHidingEnabled(true)
             .setShowTitle(false)
@@ -103,6 +103,7 @@ class ChromeCustomTabFragment : Fragment() {
                             openCustomTab(state.url)
                             viewModel.resetMagicLinkUrlState()
                         }
+
                         is MagicLinkUrlState.Error -> showError(state.msg)
                     }
                 }
