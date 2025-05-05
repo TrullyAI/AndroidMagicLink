@@ -3,8 +3,6 @@ package ai.trully.webview.model.request
 import com.google.gson.annotations.SerializedName
 
 data class MagicLinkRequest(
-    @SerializedName("title")
-    val title: String,
     @SerializedName("one_time_only")
     val one_time_only: Boolean,
     @SerializedName("external_id")

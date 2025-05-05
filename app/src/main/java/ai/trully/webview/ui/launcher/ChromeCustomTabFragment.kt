@@ -30,7 +30,6 @@ class ChromeCustomTabFragment : Fragment() {
     private var tabIsOpen = false
 
     companion object {
-        private const val MAGIC_LINK_TITLE = "YOUR_MAGIC_LINK_TITLE"
         private const val YOUR_USER_ID = "YOUR_USER_ID"
         private const val YOUR_WEBHOOK_URL = "YOUR_WEBHOOK_URL"
     }
@@ -113,7 +112,6 @@ class ChromeCustomTabFragment : Fragment() {
 
     private fun generateMagicLink() {
         val request = MagicLinkRequest(
-            title = MAGIC_LINK_TITLE,
             one_time_only = true,
             user_id = YOUR_USER_ID,
             metadata = Metadata(
