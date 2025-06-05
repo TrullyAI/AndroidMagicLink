@@ -26,4 +26,8 @@
             android:name="userID"
             app:argType="string" />
     </fragment>
+
+    <action
+        android:id="@+id/action_global_processCompletedFragment"
+        app:destination="@id/processCompletedFragment" />
 </navigation>

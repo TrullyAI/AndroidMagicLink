@@ -1,7 +1,7 @@
 package ai.trully.webview.ui.launcher
 
 import ai.trully.webview.api.NetworkManager
-import ai.trully.webview.api.services.MagicLinkService
+import ai.trully.webview.api.services.ApiService
 import ai.trully.webview.model.request.MagicLinkRequest
 import ai.trully.webview.ui.launcher.stateflow.MagicLinkUrlState
 import androidx.lifecycle.ViewModel
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class ChromeCustomTabViewModel : ViewModel() {
 
     companion object {
-        private const val YOUR_API_KEY = "YOUR_API_KEY"
+        private const val YOUR_API_KEY = "GcOBKQZ1Mn2nVSY4cWSRV3Y23gFpS8yHa06Tw2Rc"
     }
 
     private val _magicLinkUrl = MutableStateFlow<MagicLinkUrlState>(MagicLinkUrlState.Idle)
@@ -22,7 +22,7 @@ class ChromeCustomTabViewModel : ViewModel() {
     fun getMagicLinkUrl(request: MagicLinkRequest) {
         viewModelScope.launch {
             val response = NetworkManager.buildRetrofit("https://sandbox.trully.ai/", YOUR_API_KEY)
-                .create(MagicLinkService::class.java).generateMagicLink(request)
+                .create(ApiService::class.java).generateMagicLink(request)
             val body = response.body()
 
             if (body != null) {

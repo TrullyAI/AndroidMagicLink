@@ -12,6 +12,8 @@ data class MagicLinkRequest(
 )
 
 data class Metadata(
-    @SerializedName("webhook_url")
-    val webhook_url: String
+    @SerializedName("logo")
+    val logo: String,
+    @SerializedName("redirect_url")
+    val redirect_url: String
 )

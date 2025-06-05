@@ -5,13 +5,15 @@ import ai.trully.webview.databinding.FragmentChromeCustomTabBinding
 import ai.trully.webview.model.request.MagicLinkRequest
 import ai.trully.webview.model.request.Metadata
 import ai.trully.webview.ui.launcher.stateflow.MagicLinkUrlState
+import android.content.ComponentName
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabsClient
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.CustomTabsServiceConnection
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -26,12 +28,13 @@ class ChromeCustomTabFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ChromeCustomTabViewModel by viewModels()
-
-    private var tabIsOpen = false
+    private var customTabsServiceConnection: CustomTabsServiceConnection? = null
 
     companion object {
-        private const val YOUR_USER_ID = "YOUR_USER_ID"
-        private const val YOUR_WEBHOOK_URL = "YOUR_WEBHOOK_URL"
+        private const val YOUR_LOGO_URL = "https://trully-api-documentation.s3.us-east-1.amazonaws.com/trully-sdk/web.webp"
+        private const val YOUR_USER_ID = "test-deep-link-kotlin"
+        private const val DEEP_LINK_URL =
+            "webview://ai.trully.webview/process-completed?user_id=$YOUR_USER_ID"
     }
 
 
@@ -48,19 +51,15 @@ class ChromeCustomTabFragment : Fragment() {
         initListeners()
     }
 
-    override fun onResume() {
-        super.onResume()
-        onCustomTabClosed()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
+        customTabsServiceConnection?.let { requireContext().unbindService(it) }
         _binding = null
     }
 
     private fun initListeners() {
         clickListener()
-        magicLinkUrl()
+        observeMagicLinkUrl()
     }
 
     private fun clickListener() {
@@ -69,53 +68,64 @@ class ChromeCustomTabFragment : Fragment() {
         }
     }
 
-    private fun onCustomTabClosed() {
-        if (tabIsOpen) {
-            tabIsOpen = false
-            val toProcessCompleted =
-                ChromeCustomTabFragmentDirections.actionChromeCustomTabFragmentToProcessCompletedFragment(
-                    YOUR_USER_ID
-                )
-            findNavController().navigate(toProcessCompleted)
-        }
-    }
-
     private fun openCustomTab(url: String) {
         val customTabsIntent = CustomTabsIntent.Builder()
             .setToolbarColor(requireContext().getColor(R.color.white))
-            .setBookmarksButtonEnabled(false)
             .setUrlBarHidingEnabled(true)
-            .setShowTitle(false)
             .build()
 
-        tabIsOpen = true
+        customTabsServiceConnection = object : CustomTabsServiceConnection() {
+            override fun onCustomTabsServiceConnected(
+                name: ComponentName,
+                client: CustomTabsClient
+            ) {
+                client.warmup(0)
+            }
+
+            override fun onServiceDisconnected(name: ComponentName?) {
+                navigateToCompleted()
+            }
+        }.also { connection ->
+            CustomTabsClient.bindCustomTabsService(
+                requireContext(),
+                "com.android.chrome",
+                connection
+            )
+        }
+
         customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
     }
 
-    private fun magicLinkUrl() {
+    private fun observeMagicLinkUrl() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.magicLinkUrl.collect { state ->
                     when (state) {
-                        MagicLinkUrlState.Idle -> Log.i("info", "esperando acción de usuario")
-                        is MagicLinkUrlState.Success -> {
-                            openCustomTab(state.url)
-                            viewModel.resetMagicLinkUrlState()
-                        }
-
+                        is MagicLinkUrlState.Success -> openCustomTab(state.url)
                         is MagicLinkUrlState.Error -> showError(state.msg)
+                        MagicLinkUrlState.Idle -> Unit // No action needed
                     }
                 }
             }
         }
     }
 
+    private fun navigateToCompleted() {
+        findNavController().navigate(
+            ChromeCustomTabFragmentDirections.actionChromeCustomTabFragmentToProcessCompletedFragment(
+                YOUR_USER_ID
+            )
+        )
+    }
+
+
     private fun generateMagicLink() {
         val request = MagicLinkRequest(
             one_time_only = true,
             user_id = YOUR_USER_ID,
             metadata = Metadata(
-                webhook_url = YOUR_WEBHOOK_URL
+                logo = YOUR_LOGO_URL,
+                redirect_url = DEEP_LINK_URL
             )
         )
 
