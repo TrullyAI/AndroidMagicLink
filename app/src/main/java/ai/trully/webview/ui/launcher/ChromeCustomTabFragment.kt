@@ -31,8 +31,8 @@ class ChromeCustomTabFragment : Fragment() {
     private var customTabsServiceConnection: CustomTabsServiceConnection? = null
 
     companion object {
-        private const val YOUR_LOGO_URL = "https://trully-api-documentation.s3.us-east-1.amazonaws.com/trully-sdk/web.webp"
-        private const val YOUR_USER_ID = "test-deep-link-kotlin"
+        private const val YOUR_LOGO_URL = "YOUR_LOGO"
+        private const val YOUR_USER_ID = "YOU_USER_ID"
         private const val DEEP_LINK_URL =
             "webview://ai.trully.webview/process-completed?user_id=$YOUR_USER_ID"
     }
