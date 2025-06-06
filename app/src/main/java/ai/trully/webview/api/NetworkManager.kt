@@ -1,23 +1,30 @@
 package ai.trully.webview.api
 
+import ai.trully.webview.api.interceptor.TrullyInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 internal object NetworkManager {
-    private val client: OkHttpClient =
+    private fun client(apiKey: String?): OkHttpClient =
         OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .apply {
+                addInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
+                apiKey?.let { key ->
+                    addInterceptor(TrullyInterceptor(key))
+                }
+            }
             .build()
 
 
-    fun buildRetrofit(): Retrofit {
+    fun buildRetrofit(baseUrl: String, apiKey: String? = null): Retrofit {
         val retrofit: Retrofit by lazy {
             Retrofit.Builder()
-                .baseUrl("https://webhook.site/")
-                .client(client)
+                .baseUrl(baseUrl)
+                .client(client(apiKey))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }

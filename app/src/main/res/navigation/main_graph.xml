@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/chromeCustomTabFragment"
-        android:name="ai.trully.webview.ui.ChromeCustomTabFragment"
+        android:name="ai.trully.webview.ui.launcher.ChromeCustomTabFragment"
         android:label="fragment_chrome_custom_tab"
         tools:layout="@layout/fragment_chrome_custom_tab" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/processCompletedFragment"
-        android:name="ai.trully.webview.ui.ProcessCompletedFragment"
+        android:name="ai.trully.webview.ui.result.ProcessCompletedFragment"
         android:label="fragment_process_completed"
         tools:layout="@layout/fragment_process_completed" >
         <action
@@ -26,4 +26,8 @@
             android:name="userID"
             app:argType="string" />
     </fragment>
+
+    <action
+        android:id="@+id/action_global_processCompletedFragment"
+        app:destination="@id/processCompletedFragment" />
 </navigation>
