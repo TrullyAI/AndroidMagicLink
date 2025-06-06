@@ -1,8 +1,8 @@
 package ai.trully.webview.ui.result
 
 import ai.trully.webview.databinding.FragmentProcessCompletedBinding
-import ai.trully.webview.model.response.SDKResponse
-import ai.trully.webview.ui.result.stateflow.WebhookDataState
+import ai.trully.webview.model.response.MLResponse
+import ai.trully.webview.ui.result.stateflow.DataState
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -47,27 +47,27 @@ class ProcessCompletedFragment : Fragment() {
     }
 
     private fun initUI() {
-        viewModel.getWebhookData(args.userID)
+        viewModel.getData(args.userID)
     }
 
     private fun initListeners() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.webhookData.collect { state ->
+                viewModel.data.collect { state ->
                     when (state) {
-                        WebhookDataState.Idle -> Log.i("info", "Obteniendo resultados")
-                        is WebhookDataState.Success -> showResult(state.response)
-                        is WebhookDataState.Error -> showError(state.msg)
+                        DataState.Idle -> Log.i("info", "Obteniendo resultados")
+                        is DataState.Success -> showResult(state.response)
+                        is DataState.Error -> showError(state.msg)
                     }
                 }
             }
         }
     }
 
-    private fun showResult(sdkResponse: SDKResponse) {
-        binding.tvLabel.text = sdkResponse.label
-        binding.ivDoc.setImageBitmap(sdkResponse.doc?.let { viewModel.base64ToBitmap(it) })
-        binding.ivSelfie.setImageBitmap(sdkResponse.selfie?.let { viewModel.base64ToBitmap(it) })
+    private fun showResult(mlResponse: MLResponse) {
+        binding.tvLabel.text = mlResponse.label
+        binding.ivDoc.setImageBitmap(mlResponse.doc?.let { viewModel.base64ToBitmap(it) })
+        binding.ivSelfie.setImageBitmap(mlResponse.selfie?.let { viewModel.base64ToBitmap(it) })
 
         binding.loading.isVisible = false
         binding.result.isVisible = true
