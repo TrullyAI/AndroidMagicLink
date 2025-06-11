@@ -10,7 +10,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 internal interface ApiService {
-    @POST("/v1/magic-link")
+    @POST("/v2/magic-link")
     suspend fun generateMagicLink(@Body request: MagicLinkRequest): Response<MagicLinkResponse>
 
     @GET("/v2/history/request?")

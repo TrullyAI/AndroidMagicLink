@@ -12,8 +12,6 @@ data class MagicLinkRequest(
 )
 
 data class Metadata(
-    @SerializedName("logo")
-    val logo: String,
     @SerializedName("redirect_url")
     val redirect_url: String
 )

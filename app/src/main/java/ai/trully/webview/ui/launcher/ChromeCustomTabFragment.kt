@@ -31,7 +31,6 @@ class ChromeCustomTabFragment : Fragment() {
     private var customTabsServiceConnection: CustomTabsServiceConnection? = null
 
     companion object {
-        private const val YOUR_LOGO_URL = "YOUR_LOGO_URL"
         private const val YOUR_USER_ID = "YOUR_USER_ID"
         private const val DEEP_LINK_URL =
             "webview://ai.trully.webview/process-completed?user_id=$YOUR_USER_ID"
@@ -124,7 +123,6 @@ class ChromeCustomTabFragment : Fragment() {
             one_time_only = true,
             user_id = YOUR_USER_ID,
             metadata = Metadata(
-                logo = YOUR_LOGO_URL,
                 redirect_url = DEEP_LINK_URL
             )
         )
