@@ -6,6 +6,7 @@ import ai.trully.webview.model.request.MagicLinkRequest
 import ai.trully.webview.model.request.Metadata
 import ai.trully.webview.ui.launcher.stateflow.MagicLinkUrlState
 import android.content.ComponentName
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,8 +32,9 @@ class ChromeCustomTabFragment : Fragment() {
     private var customTabsServiceConnection: CustomTabsServiceConnection? = null
 
     companion object {
-        private const val YOUR_LOGO_URL = "YOUR_LOGO_URL"
-        private const val YOUR_USER_ID = "YOUR_USER_ID"
+        private const val YOUR_LOGO_URL =
+            "https://trully-api-documentation.s3.us-east-1.amazonaws.com/trully-sdk/icon-trully.svg"
+        private const val YOUR_USER_ID = "test"
         private const val DEEP_LINK_URL =
             "webview://ai.trully.webview/process-completed?user_id=$YOUR_USER_ID"
     }
@@ -72,7 +74,21 @@ class ChromeCustomTabFragment : Fragment() {
         val customTabsIntent = CustomTabsIntent.Builder()
             .setToolbarColor(requireContext().getColor(R.color.white))
             .setUrlBarHidingEnabled(true)
+            .setShareState(CustomTabsIntent.SHARE_STATE_OFF)
             .build()
+
+        customTabsIntent.intent.apply {
+            // 1. Enables JavaScript and storage
+            putExtra(CustomTabsIntent.EXTRA_ENABLE_URLBAR_HIDING, true)
+
+            // 2. CustomTab will be launch using Chrome
+            // even when the user has set other default Browser
+            setPackage("com.android.chrome")
+
+            // 3. Additional flags to improve compatibility
+            addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
 
         customTabsServiceConnection = object : CustomTabsServiceConnection() {
             override fun onCustomTabsServiceConnected(
