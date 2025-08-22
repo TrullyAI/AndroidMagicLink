@@ -9,5 +9,7 @@ data class MagicLinkResponse(
 
 data class Res(
     @SerializedName("magic_link_url")
-    val magic_link_url: String
+    val magic_link_url: String,
+    @SerializedName("token")
+    val token: String
 )

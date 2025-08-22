@@ -13,8 +13,8 @@ internal interface ApiService {
     @POST("/v2/magic-link")
     suspend fun generateMagicLink(@Body request: MagicLinkRequest): Response<MagicLinkResponse>
 
-    @GET("/v2/history/request?")
+    @GET("/v2/history/request")
     suspend fun requestResponse(
-        @Query("user_id") token: String
+        @Query("magic_link_token") token: String
     ): JsonObject
 }

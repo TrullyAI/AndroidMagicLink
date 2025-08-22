@@ -7,11 +7,11 @@
 
     <fragment
         android:id="@+id/chromeCustomTabFragment"
-        android:name="ai.trully.webview.ui.launcher.ChromeCustomTabFragment"
-        android:label="fragment_chrome_custom_tab"
-        tools:layout="@layout/fragment_chrome_custom_tab" >
+        android:name="ai.trully.webview.ui.launcher.WebViewFragment"
+        android:label="fragment_webview"
+        tools:layout="@layout/fragment_webview" >
         <action
-            android:id="@+id/action_chromeCustomTabFragment_to_processCompletedFragment"
+            android:id="@+id/action_webViewFragment_to_processCompletedFragment"
             app:destination="@id/processCompletedFragment" />
     </fragment>
     <fragment
@@ -20,10 +20,10 @@
         android:label="fragment_process_completed"
         tools:layout="@layout/fragment_process_completed" >
         <action
-            android:id="@+id/action_processCompletedFragment_to_chromeCustomTabFragment"
+            android:id="@+id/action_processCompletedFragment_to_webViewFragment"
             app:destination="@id/chromeCustomTabFragment" />
         <argument
-            android:name="userID"
+            android:name="token"
             app:argType="string" />
     </fragment>
 

@@ -47,7 +47,7 @@ class ProcessCompletedFragment : Fragment() {
     }
 
     private fun initUI() {
-        viewModel.getData(args.userID)
+        viewModel.getData(args.token)
     }
 
     private fun initListeners() {
@@ -65,7 +65,7 @@ class ProcessCompletedFragment : Fragment() {
     }
 
     private fun showResult(mlResponse: MLResponse) {
-        binding.tvLabel.text = mlResponse.label
+        binding.tvLabel.text = mlResponse.result
         binding.ivDoc.setImageBitmap(mlResponse.doc?.let { viewModel.base64ToBitmap(it) })
         binding.ivSelfie.setImageBitmap(mlResponse.selfie?.let { viewModel.base64ToBitmap(it) })
 
@@ -87,7 +87,7 @@ class ProcessCompletedFragment : Fragment() {
 
     private fun onSnackBarDismissed() {
         val toChromeCustomTab =
-            ProcessCompletedFragmentDirections.actionProcessCompletedFragmentToChromeCustomTabFragment()
+            ProcessCompletedFragmentDirections.actionProcessCompletedFragmentToWebViewFragment()
         findNavController().navigate(toChromeCustomTab)
     }
 }
